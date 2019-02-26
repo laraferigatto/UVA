@@ -1,0 +1,81 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef pair<int, int> ii;
+int peso[40];
+int valor[40];
+int conta[40];
+int PD[40][1010];
+vector<ii>caminho;
+
+int w, t, cont;
+int mochila(int item, int dispo)
+{
+	if (dispo == 0 || item == t) return 0;
+	if (PD[item][dispo] != -1) return PD[item][dispo];
+	if (dispo - conta[item] < 0) return mochila(item + 1, dispo);
+	else
+		PD[item][dispo] = max(mochila(item + 1, dispo), valor[item] + mochila(item + 1, dispo - conta[item]));
+
+	return PD[item][dispo];
+}
+
+void caminhoM(int item, int dispo)
+{
+
+	if (dispo == 0 || item == t)
+	{
+
+		return;
+	}
+
+	if (dispo - conta[item] >= 0)
+	{
+
+		if (valor[item] + mochila(item + 1, dispo - conta[item]) >= mochila(item + 1, dispo))
+		{
+
+			caminho.push_back(ii(peso[item], valor[item]));
+			caminhoM(item + 1, dispo - conta[item]);
+			cont++;
+			return;
+		}
+
+	}
+	caminhoM(item + 1, dispo);
+
+
+
+}
+
+int main()
+{
+	int flag = 0;
+	int disp, j;
+	while (scanf("%d%d", &disp, &w) != EOF)
+	{
+
+		scanf("%d", &t);
+		caminho.clear();
+		memset(PD, -1, sizeof PD);
+		for (int i = 0; i < t; i++)
+		{
+			scanf("%d%d", &peso[i], &valor[i]);
+			conta[i] = ((peso[i] * w) + (2 * peso[i] * w));
+		}
+
+		cont = 0;
+
+		caminhoM(0, disp);
+		if(flag) printf("\n");
+		flag = 1;
+		printf("%d\n%d\n", mochila(0, disp), cont);
+		
+		for (j = 0; j < (int)caminho.size(); j++)
+		{
+			printf("%d %d\n", caminho[j].first, caminho[j].second);
+
+		}
+		
+		
+	}
+}
