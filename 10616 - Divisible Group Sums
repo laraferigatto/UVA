@@ -6,24 +6,24 @@ int cont;
 int PD[210][10000];
 int mochila(int item, int soma, int conta)
 {
-	
-	if(item > N )
-	{		
-		 return 0;
-	}	
-	if(PD[item][soma] != -1) return PD[item][soma];
 	if(conta == M )
 	{
 		if(soma%D == 0)
 			return 1;
 		return 0;
 	}
-	else 
-	{ 	
-		PD[item][soma] = mochila(item+1, valor[item] + soma, conta+1) +  mochila(item+1, soma, conta);
-	}
 	
-	return PD[item][soma];
+	if(item == N )
+	{		
+		 return 0;
+	}
+	if(PD[item][soma] != -1) return PD[item][soma];
+	
+	
+	return PD[item][soma] = mochila(item+1, valor[item] + soma, conta+1) +  mochila(item+1, soma, conta);
+	
+	
+	
 
 }
 int main()
