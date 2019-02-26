@@ -4,19 +4,22 @@ int N,M, D;
 int valor[10000];
 int cont;
 int PD[1000][1000];
-void mochila(int item, int soma, int conta)
+int mochila(int item, int soma, int conta)
 {
-	if(item == N ) return;
+	if(item == N ) return 0;
 	/*if(PD[item][soma] != -1)
 		return PD[item][soma];*/
 	if(conta == M )
 	{
 		if(soma%D == 0)
 		{
-			cont++;			
-		}		
+			return 1;			
+		}
+		return 0;		
 	}
-	else  mochila(item+1, valor[item] + soma, conta+1);
+	else  
+	PD[item][soma] = mochila(item+1, valor[item] + soma, conta+1) +  mochila(item+1, soma, conta);
+	return PD[item][soma];
 }
 int main()
 {
@@ -30,9 +33,8 @@ int main()
 		cont = 0;
 		for (int i = 0; i < Q; i++)
 		{
-			scanf("%d%d", &D, &M);		
-			mochila(0,0,0);
-			printf("%d\n", cont);
+			scanf("%d%d", &D, &M);
+			printf("%d\n", mochila(0,0,0));
 		}
 
 	}
