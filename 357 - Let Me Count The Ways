@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+int moedas[] = {50, 25, 10, 5, 1};
+int B;
+int PD[6][8000];
+int vet[7490];
+int moeda(int item, int soma, int N)
+{
+	if(soma == N) return 1;
+	if(soma > N || item == 5) return 0;
+	if(PD[item][soma] != -1) return PD[item][soma];
+	return PD[item][soma] = moeda(item+1, soma, N) + moeda(item, soma + moedas[item],N);
+}
+int main()
+{
+	for (int i = 1; i <= 7489; i++)
+	{
+		memset(PD,-1,sizeof PD);
+		vet[i] = moeda(0,0,i);
+	}
+
+	while(scanf("%d", &B) != EOF)
+	{
+		memset(PD, -1, sizeof PD);
+		if(vet[B] == 1)
+			printf("There is only %d way to produce %d cents change.\n", vet[B], B);			
+		else
+			printf("There are %d ways to produce %d cents change.\n", vet[B], B);
+			
+	}
+	
+}
