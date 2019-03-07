@@ -1,0 +1,22 @@
+#include <bits/stdc++.h>
+using namespace std;
+int N;
+const int vet[21] = {1,8,27,64,125,216,343,512,729,1000,1331,1728,2197,2744,3375,4096,4913,5832,6859,8000,9261};
+long long PD[23][10100];
+long long cubos(int item,  int soma)
+{
+	if(soma == N) return 1;
+	if(item == 21 || soma > N) return 0;
+	if(PD[item][soma] != -1) return PD[item][soma];	
+	return PD[item][soma] = cubos(item+1, soma) + cubos(item, soma + vet[item]);
+
+}
+int main()
+{
+	while(cin >> N)
+	{
+		memset(PD, -1, sizeof PD);
+		cout << cubos(0,0) << endl;;
+	}
+	
+}
