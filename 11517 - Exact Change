@@ -1,0 +1,41 @@
+#include  <bits/stdc++.h>
+using namespace std;
+int N,tam;
+#define INF 0x3f3f3f3f
+int valor[150];
+
+typedef pair <int, int> ii;
+ii PD[150][10100];
+ii soma(ii a, ii b)
+{
+	ii aux;
+	aux.first = a.first + b.first;
+	aux.second = a.second + b.second;
+	return aux;
+}
+ii moeda(int item, int disp)
+{	
+	if(disp <= 0) return ii(0,0);
+	if(item == tam) return ii(INF,INF);
+	if(PD[item][disp].first != -1 && PD[item][disp].second != -1) return PD[item][disp];
+	return PD[item][disp] = min(moeda(item+1, disp), soma(moeda(item+1, disp - valor[item]), ii(valor[item],1)));
+	
+}
+int main()
+{
+	int t;
+	scanf("%d", &t);
+	for (int i = 0; i < t; i++)
+	{
+		memset(PD, -1, sizeof PD);
+		scanf("%d%d", &N, &tam);
+		for (int j = 0; j < tam; j++)
+		{
+			scanf("%d", &valor[j]);
+		}
+		ii result;
+		result = moeda(0,N);
+		printf("%d %d\n", result.first, result.second);  	
+	}
+	
+}
