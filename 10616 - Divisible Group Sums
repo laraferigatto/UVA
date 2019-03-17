@@ -1,52 +1,39 @@
 #include <bits/stdc++.h>
-using namespace std;
-int N,M, D;
-int valor[210];
-int cont;
-int PD[210][10000];
-int mochila(int item, int soma, int conta)
-{
-	if(conta == M )
-	{
-		if(soma%D == 0)
-			return 1;
-		return 0;
-	}
-	
-	if(item == N )
-	{		
-		 return 0;
-	}
-	if(PD[item][soma] != -1) return PD[item][soma];
-	
-	
-	return PD[item][soma] = mochila(item+1, valor[item] + soma, conta+1) +  mochila(item+1, soma, conta);
-	
-	
-	
 
+using namespace std;
+int offset = 20;
+int numeros[210];
+int n, q, divi, quant;
+int pd[210][40][11];
+int moeda(int item, int div, int cont)
+{
+	if(div == 0 && cont == quant) return 1;
+	if(cont == quant) return 0;
+	if(item == n) return 0;
+	if(pd[item][div+offset][cont] != -1) return pd[item][div+offset][cont];
+	return pd[item][div+offset][cont] = moeda(item+1, (div + numeros[item])%divi, cont+1) + moeda(item+1, div, cont);
 }
 int main()
 {
-	int Q;
-	cont = 0;
-	while(scanf("%d%d", &N, &Q), N || Q)
-	{
-		cont++;
-		for (int i = 0; i < N; i++)
+	int k;
+	k = 1;
+	while(scanf("%d%d", &n, &q), n || q)	{
+		
+		for (int i = 0; i < n; i++)
 		{
-			scanf("%d", &valor[i]);
+			scanf("%d", &numeros[i]);
 		}
-	
-		for (int i = 0; i < Q; i++)
+		
+		for (int i = 1; i <= q; i++)
 		{
-			memset(PD, -1, sizeof PD);
-			scanf("%d%d", &D, &M);
-			if(i == 0)
-				printf("SET %d:\n", cont);
-			printf("QUERY %d: %d\n", i+1, mochila(0,0,0));
+			
+			memset(pd, -1, sizeof pd);
+			scanf("%d%d", &divi, &quant);
+			if(i == 1) printf("SET %d:\n", k);
+			printf("QUERY %d: %d\n", i, moeda(0,0,0));
 		}
-
+		k++;
+		
 	}
-	
 }
+
