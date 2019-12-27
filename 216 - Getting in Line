@@ -1,0 +1,84 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define V 4
+typedef pair<int, int> ii;
+#define inf 123456789
+long double g[21][21];
+vector <int> ans;
+long double TSP(int v)
+{ 
+	vector <int> vertex;
+	for(int i = 0; i < v; i++)
+	{
+		vertex.push_back(i);
+	}
+	int k;
+	long double min_end = inf;
+	do
+	{
+		long double current = 0.0;
+		k = vertex[0];
+		for(int i = 1; i < v; i++)
+		{	
+			int u = vertex[i];		
+			current = current + (g[k][u]);
+			k = u;
+		}
+		if(current < min_end)
+		{
+			ans = vertex;
+			min_end = current;
+		}
+	}
+	while(next_permutation(vertex.begin(), vertex.end()));
+	return min_end;
+	 
+	   
+}
+int main()
+{	
+	int pc, a, b, k = 1;
+	map < int, ii> vert;
+	while(scanf("%d", &pc), pc)
+	{
+		vector <ii> cord;
+		for(int i = 0; i < pc; i++)
+		{
+			scanf("%d%d", &a, &b);
+			vert[i] = ii(a,b);
+			cord.push_back(ii(a,b));
+		}
+		
+		for(int i = 0; i < pc; i++)
+		{
+			for(int j = i +1; j < pc; j++)
+			{
+				int c = abs(cord[i].first - cord[j].first);
+				int d = abs(cord[i].second - cord[j].second);
+				c = c*c;
+				d = d*d;
+				long double x = sqrt(c + d);
+				g[i][j] = g[j][i] = x+16;
+			}
+		}
+		
+		
+		long double resp =  TSP(pc);
+		puts("**********************************************************");
+		printf("Network #%d\n", k);
+		for(int i = 1; i < (int)ans.size(); i++)
+		{
+			printf("Cable requirement to connect (%d,%d) to (%d,%d) is %.2Lf feet.\n", cord[ans[i-1]].first, cord[ans[i-1]].second, cord[ans[i]].first, cord[ans[i]].second, g[ans[i-1]][ans[i]]);
+		}		
+		printf("Number of feet of cable required is %.2Lf.\n", resp);
+		for(int i = 0; i < pc; i++)
+		{
+			for(int j = i +1; j < pc; j++)
+			{
+				g[i][j] = 0;
+			}
+		}
+		k++;
+	}
+	
+}
